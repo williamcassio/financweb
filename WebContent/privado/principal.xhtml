@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Login</title>
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<body>
+	<h:form id="form">
+		<p:growl id="msg" />
+		<h:outputLabel
+			value="Usuário logado: #{principalBean.loginBean.usuarioLogado.nome}"
+			styleClass="fonteNegrito" />
+		<p:panel header="Menu Principal"
+			rendered="#{principalBean.loginBean !=null}">
+			<h:panelGrid columns="2">
+				<h:panelGrid>
+					<p:commandLink value="Lançamentos"
+						action="#{principalBean.lancamentos()}" />
+					<p:commandLink value="Receitas"
+						action="#{principalBean.receitas()}" />
+					<p:commandLink value="Despesas"
+						action="#{principalBean.despesas()}" />
+					<p:commandLink value="Cadastro de Usuários"
+						action="#{principalBean.usuarios()}"
+						rendered="#{principalBean.loginBean.usuarioLogado.administrador}" />
+					<p:commandLink onclick="PF('pwd').show();" value="Trocar senha" />
+					<p:commandLink value="Logoff"
+						action="#{principalBean.efetuarLogoff()}" />
+				</h:panelGrid>
+				<h:outputLabel>
+					<h:graphicImage library="imagens" name="java150.png"
+						style="border:0" />
+				</h:outputLabel>
+			</h:panelGrid>
+		</p:panel>
+		<p:dialog header="Alteração de Senha" widgetVar="pwd"
+			showEffect="explode" hideEffect="bounce" modal="true">
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Senha Atual" />
+				<p:password value="#{principalBean.senAtual}" />
+				<h:outputLabel value="Nova senha" />
+				<p:password value="#{principalBean.senNova}" />
+				<h:outputLabel value="Confirma Senha" />
+				<p:password value="#{principalBean.senConf}" />
+				<p:commandButton value="Ok" action="#{principalBean.confereSenha()}"
+					onclick="confirm.hide()" update=":form" ajax="false">
+				</p:commandButton>
+				<p:commandButton value="Cancelar" onclick="confirm.hide()"
+					ajax="false"></p:commandButton>
+			</h:panelGrid>
+		</p:dialog>
+
+	</h:form>
+</body>
+</html>
+

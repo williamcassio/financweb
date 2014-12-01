@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="usuarios" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="047ecf01-7d2e-4617-9727-7713ab876442">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="administrador" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[administrador]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="lancamentos" class="java.util.List">
+		<fieldDescription><![CDATA[lancamentos]]></fieldDescription>
+	</field>
+	<field name="login" class="java.lang.String">
+		<fieldDescription><![CDATA[login]]></fieldDescription>
+	</field>
+	<field name="modalidades" class="java.util.List">
+		<fieldDescription><![CDATA[modalidades]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="senha" class="java.lang.String">
+		<fieldDescription><![CDATA[senha]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="79" uuid="88ffe317-067e-4025-94de-3b047048830b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Lista de Usuários]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="444" y="57" width="101" height="20" uuid="1e9aefa4-a5e6-45d8-a783-9b0aac6c7530"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="632872fa-cc17-4dfb-8f13-6537a4e0e209"/>
+			</line>
+			<line>
+				<reportElement x="0" y="27" width="555" height="1" uuid="23bc9069-8a9e-41c6-b677-86a8687d272c"/>
+			</line>
+			<staticText>
+				<reportElement x="6" y="4" width="160" height="20" uuid="8be8adbf-55f4-4b43-9ca5-fb823b58490d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="4" width="100" height="20" uuid="29141ae2-f3a5-4a93-9de6-f1f8861b4ebc"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Login]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="4" width="185" height="20" uuid="7d686af3-a0bf-4a4e-ae8f-2d9de7f820d2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[E-mail]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="4" width="71" height="20" uuid="c83da3b4-2fe6-42da-ab4b-6c2eacb6f1f5"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Administrador]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="1" width="160" height="20" uuid="8fc74aad-ccaa-43df-b6af-233721f30525"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="176" y="1" width="100" height="20" uuid="1bbf6db2-6675-465b-b2a3-b49ebd1591d3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="1" width="185" height="20" uuid="54e7f996-cec3-4695-a44f-21a9ae0d5de0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="492" y="3" width="16" height="16" uuid="3abdfb95-11f8-42c1-b37f-b74882e73f88">
+					<printWhenExpression><![CDATA[$F{administrador}==true]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["C:\\Projetos Java\\FinancWeb\\WebContent\\resources\\imagens\\shield16.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="428" y="5" width="80" height="20" uuid="551032de-8d05-4beb-8dcd-5c393ddbc0d6"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="508" y="5" width="40" height="20" uuid="e33f3b1c-35a6-417d-bb49-8d61b538f943"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

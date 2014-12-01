@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Lançamentos</title>
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<body>
+	<h:form id="form"
+		rendered="#{lancamentosBean.loginBean.usuarioLogado!=null}">
+		<p:growl id="msg" />
+		<h1>Lançamentos Financeiros</h1>
+		<h:panelGrid id="lancmentos"
+			rendered="#{!lancamentosBean.mostrarGraficos}">
+			<h:panelGrid columns="4">
+				<h:outputLabel value="Período" />
+				<p:calendar value="#{lancamentosBean.dtini}" mask="true"
+					pattern="dd/MM/yyyy" size="8">
+					<p:ajax event="dateSelect"
+						listener="#{lancamentosBean.carregarLancamentos()}" update="form" />
+				</p:calendar>
+				<h:outputLabel value="e" />
+				<p:calendar value="#{lancamentosBean.dtfim}" mask="true"
+					pattern="dd/MM/yyyy" size="8">
+					<p:ajax event="dateSelect"
+						listener="#{lancamentosBean.carregarLancamentos()}" update="form" />
+				</p:calendar>
+			</h:panelGrid>
+			<br />
+			<h:panelGrid columns="7" id="pnoper">
+				<h:outputLabel value="Tipo Operação" />
+				<p:selectOneMenu id="cbTipoOper"
+					value="#{lancamentosBean.operacaoSelecionada}">
+					<f:selectItems value="#{lancamentosBean.operacoes}" var="operacao"
+						itemLabel="#{operacao}" />
+					<p:ajax listener="#{lancamentosBean.atualizaOperacoes()}"
+						update=":form:pnoper" />
+				</p:selectOneMenu>
+				<h:outputLabel value="Modalidade" />
+				<p:selectOneMenu id="cbModalidade"
+					value="#{lancamentosBean.lancamentoSelecionado.modalidade}"
+					converter="#{lancamentosBean.modalidadeConverter}">
+					<f:selectItems value="#{lancamentosBean.listaModalidades}"
+						var="modalidade" itemLabel="#{modalidade.descricao}" />
+					<p:ajax listener="#{lancamentosBean.carregarDadosOperacaoFixa()}"
+						update=":form:pnlanc" />
+				</p:selectOneMenu>
+				<h:outputLabel value="Somente modalidades variáveis" />
+				<p:selectBooleanCheckbox value="#{lancamentosBean.somenteNaoFixas}">
+					<p:ajax update=":form:pnoper"
+						listener="#{lancamentosBean.atualizaOperacoes()}"></p:ajax>
+				</p:selectBooleanCheckbox>
+				<p:commandButton value="Inserir Modalidades Fixas"
+					action="#{lancamentosBean.lancarReceitasDespesasFixas()}"
+					update=":form" />
+			</h:panelGrid>
+			<br />
+			<h:panelGrid id="pnlanc" columns="7">
+				<h:outputLabel value="Data" />
+				<p:calendar value="#{lancamentosBean.lancamentoSelecionado.data}"
+					mask="true" pattern="dd/MM/yyyy" size="8" />
+				<h:outputLabel value="Valor" />
+				<p:inputText value="#{lancamentosBean.lancamentoSelecionado.valor}">
+					<f:convertNumber maxFractionDigits="2" pattern="###,##0.00" />
+				</p:inputText>
+				<h:outputLabel value="Observação" />
+				<p:inputText
+					value="#{lancamentosBean.lancamentoSelecionado.observacao}"
+					size="60" maxlength="60" />
+				<p:commandButton value="Salvar" update=":form"
+					action="#{lancamentosBean.salvarLancamento()}" />
+			</h:panelGrid>
+			<h:panelGrid>
+				<p:dataTable value="#{lancamentosBean.lista}" var="lancamento">
+					<f:facet name="header">Lançamentos</f:facet>
+					<p:column headerText="Operação" width="140">
+						<h:outputText value="#{lancamento.operacaoDescricao}" />
+					</p:column>
+					<p:column headerText="Modalidade" width="300">
+						<h:outputText value="#{lancamento.modalidade.descricao}" />
+					</p:column>
+					<p:column headerText="Data" styleClass="alinhamentoCentralizado"
+						width="90">
+						<h:outputText value="#{lancamento.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Valor" styleClass="alinhamentoDireita"
+						width="120">
+						<h:outputText value="#{lancamento.valor}">
+							<f:convertNumber pattern="###,##0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Obs" width="350">
+						<h:outputText value="#{lancamento.observacao}" />
+					</p:column>
+
+					<p:column headerText="Ações" width="60"
+						styleClass="alinhamentoCentralizado">
+						<h:commandLink title="Editar">
+							<f:ajax execute="@this" render=":form" />
+							<h:graphicImage library="imagens" name="editar16.png"
+								style="border:0" />
+							<f:setPropertyActionListener
+								target="#{lancamentosBean.lancamentoSelecionado}"
+								value="#{lancamento}" />
+						</h:commandLink>
+						<h:commandLink title="Excluir"
+							action="#{lancamentosBean.excluirLancamento()}"
+							onclick="if (!confirm('Confirma a exclusão do Registro #{lancamento.modalidade.descricao}?')) return false;">
+							<f:ajax execute="@this" render=":form" />
+							<h:graphicImage library="imagens" name="excluir16.png"
+								style="border:0" />
+							<f:setPropertyActionListener
+								target="#{lancamentosBean.lancamentoSelecionado}"
+								value="#{lancamento}" />
+						</h:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Total Receitas" />
+				<h:outputText value="#{lancamentosBean.totalReceitas}">
+					<f:convertNumber maxFractionDigits="2" pattern="###,##0.00" />
+				</h:outputText>
+				<h:outputLabel value="Total Despesas" />
+				<h:outputText value="#{lancamentosBean.totalDespesas}">
+					<f:convertNumber maxFractionDigits="2" pattern="###,##0.00" />
+				</h:outputText>
+				<h:outputLabel value="Saldo" />
+				<h:outputText value="#{lancamentosBean.totalSaldo}">
+					<f:convertNumber maxFractionDigits="2" pattern="###,##0.00" />
+				</h:outputText>
+			</h:panelGrid>
+			<p:panelGrid columns="4">
+				<p:commandButton value="Planilha"
+					action="#{lancamentosBean.download()}" update=":form" ajax="false"
+					disabled="#{lancamentosBean.lista.size() == 0}">
+				</p:commandButton>
+				<p:commandButton value="Relatório"
+					action="#{lancamentosBean.imprimirPDF()}"
+					disabled="#{lancamentosBean.lista.size() == 0}" ajax="false" />
+				<p:commandButton value="Gráficos"
+					action="#{lancamentosBean.carregarGrafico()}"
+					disabled="#{lancamentosBean.lista.size() == 0}" ajax="false"
+					update=":form" />
+				<p:commandButton value="Retornar"
+					action="#{lancamentosBean.retornarMenu()}" />
+			</p:panelGrid>
+		</h:panelGrid>
+		<div align="left">
+			<h:panelGrid id="graficos"
+				rendered="#{lancamentosBean.mostrarGraficos}">
+
+				<h:panelGrid columns="2">
+					<h:outputLabel
+						value="Data Inicial #{lancamentosBean.dataFormatadaIni}" />
+					<h:outputLabel
+						value="Data Final #{lancamentosBean.dataFormatadaFim}" />
+				</h:panelGrid>
+				<h:panelGrid columns="3">
+					<p:chart type="pie" model="#{lancamentosBean.pizzaReceitas}"
+						style="width:400px;height:350px" />
+					<p:chart type="pie" model="#{lancamentosBean.pizzaDespesas}"
+						style="width:400px;height:350px" />
+					<p:chart type="pie" model="#{lancamentosBean.pizzaTotal}"
+						style="width:400px;height:350px" />
+				</h:panelGrid>
+
+			</h:panelGrid>
+		</div>
+		<br />
+		<p:commandButton value="Retornar"
+			rendered="#{lancamentosBean.mostrarGraficos}"
+			action="#{lancamentosBean.mostrarGrafico()}" update=":form" />
+	</h:form>
+</body>
+</html>

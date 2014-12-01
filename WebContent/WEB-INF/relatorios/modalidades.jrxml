@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modalidades" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="26e55710-5e7f-428e-8716-62d63ede044b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="zebra">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue() % 2 == 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#FFFF99"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="tipo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="descricao" class="java.lang.String">
+		<fieldDescription><![CDATA[descricao]]></fieldDescription>
+	</field>
+	<field name="diaBase" class="java.lang.Integer">
+		<fieldDescription><![CDATA[diaBase]]></fieldDescription>
+	</field>
+	<field name="fixo" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[fixo]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="tipoOperacao" class="br.com.enums.TipoOperacao">
+		<fieldDescription><![CDATA[tipoOperacao]]></fieldDescription>
+	</field>
+	<field name="usuario" class="br.com.entity.Usuario">
+		<fieldDescription><![CDATA[usuario]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.Double">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="2" width="555" height="36" uuid="25673ada-d222-4861-b8c2-0e3d3aee1e9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Modalidades]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="64" width="555" height="20" uuid="87f3d234-84ac-4ec2-bf69-d71d5358241a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="371" y="38" width="184" height="20" uuid="8ae16356-8d52-4077-b898-695f8134ee93"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="25" backcolor="#99FFCC" uuid="a6c6a3f5-10e2-4b5a-a000-fd8aca1873b9"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="2" width="220" height="20" uuid="1db61de6-409e-4b49-b1a4-4827e1d1fc81"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="2" width="100" height="20" uuid="8b8f118a-f628-4d82-aaf8-ec8c115ecc5d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[fixo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="326" y="2" width="100" height="20" uuid="5c322aa0-0854-4480-be01-85bc3d05f8a1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Dia Base]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="2" width="100" height="20" uuid="f7fbbc51-4578-44aa-9624-9e2f15c85492"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<rectangle>
+				<reportElement style="zebra" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="555" height="23" uuid="10bb1c27-27c1-49ca-9d66-55e6ec3e397e"/>
+			</rectangle>
+			<textField>
+				<reportElement x="5" y="2" width="220" height="20" uuid="97d36249-e6db-42a0-a5f6-e05a6ebe6031"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="225" y="2" width="100" height="20" uuid="fdb829a0-e007-4cff-8f33-0b6ef3637933"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[( $F{fixo} ? "Sim" : "Não" )]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="371" y="1" width="54" height="20" uuid="e0d198c5-198b-4e54-9489-48cd5f1984cf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{diaBase}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="437" y="1" width="100" height="20" uuid="1fec03fc-4af5-4c0b-9679-6f331e165049"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="425" y="14" width="80" height="20" uuid="522206e6-31ba-4c16-a74a-afa28e08e702"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="505" y="14" width="40" height="20" uuid="e67a330c-b744-4fdf-82d7-f71f078d62e6"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

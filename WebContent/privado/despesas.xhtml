@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Despesas</title>
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<body>
+	<h:form id="form">
+		<p:growl id="msg" />
+		<p:focus context="form" />
+		<h1>Cadastro de Despesas</h1>
+		<p:panelGrid>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Descrição" />
+				<p:inputText value="#{despesasBean.despesaSelecionada.descricao}"
+					size="80" maxlength="80" />
+				<h:outputLabel value="Fixa" />
+				<p:selectBooleanCheckbox
+					value="#{despesasBean.despesaSelecionada.fixo}">
+					<p:ajax update=":form:pnfixorec" />
+				</p:selectBooleanCheckbox>
+			</h:panelGrid>
+			<h:panelGrid columns="5" id="pnfixorec">
+				<h:outputLabel value="Valor" />
+				<p:inputText value="#{despesasBean.despesaSelecionada.valor}"
+					styleClass="alinhamentoDireita"
+					disabled="#{!despesasBean.despesaSelecionada.fixo}">
+					<f:convertNumber maxFractionDigits="2" />
+				</p:inputText>
+				<h:outputLabel value="Dia Base" />
+				<p:inputText value="#{despesasBean.despesaSelecionada.diaBase}"
+					styleClass="alinhamentoDireita"
+					disabled="#{!despesasBean.despesaSelecionada.fixo}">
+					<f:convertNumber maxFractionDigits="0" />
+				</p:inputText>
+				<p:commandButton value="Salvar"
+					action="#{despesasBean.adicionarDespesa()}" update=":form">
+				</p:commandButton>
+			</h:panelGrid>
+			<p:dataTable id="tblistadespesas"
+				value="#{despesasBean.listaDespesas}" var="despesa" paginator="true"
+				rows="10">
+				<f:facet name="header">Listagem</f:facet>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{despesa.descricao}" />
+				</p:column>
+				<p:column headerText="Fixa" width="30"
+					styleClass="alinhamentoCentralizado">
+					<h:outputText value="#{despesa.fixo==true?'X':''}" />
+				</p:column>
+				<p:column headerText="Valor" styleClass="alinhamentoDireita"
+					width="80">
+					<h:outputText value="#{despesa.valor}">
+						<f:convertNumber maxFractionDigits="2" pattern="###,##0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Dia" styleClass="alinhamentoDireita"
+					width="40">
+					<h:outputText value="#{despesa.diaBase}">
+						<f:convertNumber maxFractionDigits="0" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Ações" width="60"
+					styleClass="alinhamentoCentralizado">
+					<h:commandLink title="Editar">
+						<f:ajax execute="@this" render=":form" />
+						<h:graphicImage library="imagens" name="editar16.png"
+							style="border:0" />
+						<f:setPropertyActionListener
+							target="#{despesasBean.despesaSelecionada}" value="#{despesa}" />
+					</h:commandLink>
+					<h:commandLink title="Excluir"
+						action="#{despesasBean.removerDespesa()}"
+						onclick="if (!confirm('Confirma a exclusão do Registro #{despesa.descricao}?')) return false;">
+						<f:ajax execute="@this" render=":form" />
+						<h:graphicImage library="imagens" name="excluir16.png"
+							style="border:0" />
+						<f:setPropertyActionListener
+							target="#{despesasBean.despesaSelecionada}" value="#{despesa}" />
+					</h:commandLink>
+				</p:column>
+			</p:dataTable>
+			<br />
+			<p:commandButton value="Relatório"
+				action="#{despesasBean.imprimirBrowser()}"
+				rendered="#{despesasBean.listaDespesas.size() > 0}" ajax="false"
+				update=":form" onclick="this.form.target='_blank'" />
+			
+			<p:commandButton value="Retornar"
+				action="#{despesasBean.retornarMenu()}" />
+		</p:panelGrid>
+	</h:form>
+</body>
+</html>

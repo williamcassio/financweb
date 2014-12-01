@@ -1,0 +1,45 @@
+.alinhamentoCentralizado {
+	text-align: center;
+}
+
+.alinhamentoEsquerda {
+	text-align: left;
+}
+
+.alinhamentoDireita {
+	text-align: right;
+}
+
+.fonteItalica {
+	font-style: italic;
+}
+
+.fonteNegrito {
+	font-weight: bold;
+	font-size: large;
+}
+
+.italicoFundo {
+	font-style: italic;
+	background: aqua;
+}
+
+.fundoVermelho {
+	background: red;
+}
+
+.tamanhoBotaoPadrao {
+	width: 70px;
+}
+
+.primeiraLinha {
+	background: silver;
+}
+
+.segundaLinha {
+	background: white;
+}
+
+.meioTela {
+	top: 70px;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Usuários do Sistema</title>
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<body>
+	<h:form id="form">
+		<p:growl id="msg" />
+		<p:focus context=":form" />
+		<h1>Cadastro de Usuários</h1>
+		<h:panelGrid rendered="#{usuarioBean.loginBean.usuarioLogado!=null}">
+			<h:panelGrid id="pnlista" rendered="#{!usuarioBean.exibirCampos}">
+				<p:dataTable id="tbusuarios" value="#{usuarioBean.listaUsuarios}"
+					var="usuario">
+					<f:facet name="header">Lista de Usuário do Sistema</f:facet>
+					<p:column headerText="ID" styleClass="alinhamentoDireita"
+						width="60">
+						<h:outputText value="#{usuario.id}" />
+					</p:column>
+					<p:column headerText="Nome" width="300">
+						<h:outputText value="#{usuario.nome}" />
+					</p:column>
+					<p:column headerText="Login" styleClass="alinhamentoCentralizado"
+						width="100">
+						<h:outputText value="#{usuario.login}" />
+					</p:column>
+					<p:column headerText="Email" width="350">
+						<h:outputText value="#{usuario.email}" />
+					</p:column>
+					<p:column headerText="Adm" width="40"
+						styleClass="alinhamentoCentralizado">
+						<h:outputLabel rendered="#{usuario.administrador}">
+							<h:graphicImage library="imagens" name="shield16.png"
+								style="border:0" />
+						</h:outputLabel>
+					</p:column>
+					<p:column headerText="Ações" width="50"
+						styleClass="alinhamentoCentralizado">
+						<h:commandLink title="Editar" action="#{usuarioBean.editar()}">
+							<f:ajax execute="@this" render=":form" />
+							<h:graphicImage library="imagens" name="editar16.png"
+								style="border:0" />
+							<f:setPropertyActionListener
+								target="#{usuarioBean.usuarioSelecionado}" value="#{usuario}" />
+						</h:commandLink>
+						<p:commandLink title="Excluir" onclick="PF('dlg1').show();">
+							<h:graphicImage library="imagens" name="excluir16.png"
+								style="border:0" />
+							<f:setPropertyActionListener
+								target="#{usuarioBean.usuarioSelecionado}" value="#{usuario}" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</h:panelGrid>
+			<h:panelGrid id="pnedicao" rendered="#{usuarioBean.exibirCampos}"
+				columns="2">
+				<h:outputLabel value="Nome" />
+				<p:inputText id="txtnome"
+					value="#{usuarioBean.usuarioSelecionado.nome}" required="true"
+					requiredMessage="Campo Nome requerido" size="80" maxlength="80" />
+				<h:outputLabel value="Email" />
+				<p:inputText id="txtemail"
+					value="#{usuarioBean.usuarioSelecionado.email}" required="true"
+					requiredMessage="Campo Email requerido" size="100" maxlength="100" />
+				<h:outputLabel value="Login" />
+				<p:inputText id="txtlogincad"
+					value="#{usuarioBean.usuarioSelecionado.login}" required="true"
+					requiredMessage="Campo Nome requerido" size="60" maxlength="60" />
+				<h:outputLabel value="Senha" />
+				<p:password id="txtsenhacad" required="true"
+					value="#{usuarioBean.usuarioSelecionado.senha}"
+					requiredMessage="Campo senha requerido" feedback="true"
+					match="txtconfirmacad" size="20"
+					validatorMessage="Senha não confere" />
+				<h:outputLabel value="Confirma Senha" />
+				<p:password id="txtconfirmacad" required="true"
+					value="#{usuarioBean.confirmaSenha}"
+					requiredMessage="Campo confirma senha requerido" feedback="true"
+					size="20" />
+				<h:outputLabel value="Administrador:" />
+				<p:selectBooleanCheckbox
+					value="#{usuarioBean.usuarioSelecionado.administrador}" />
+				<p:commandButton value="Salvar" action="#{usuarioBean.salvar()}"
+					update=":form" />
+				<p:commandButton value="Cancelar" action="#{usuarioBean.cancelar()}"
+					update=":form" immediate="true" />
+			</h:panelGrid>
+			<h:panelGrid columns="3">
+				<p:commandButton value="Novo" action="#{usuarioBean.novo()}"
+					rendered="#{!usuarioBean.exibirCampos}" update=":form" />
+				<p:commandButton value="Relatório"
+					action="#{usuarioBean.imprimirBrowser()}"
+					rendered="#{!usuarioBean.exibirCampos and usuarioBean.listaUsuarios.size() >0}"
+					ajax="false" update=":form" onclick="this.form.target='_blank'" />
+				<p:commandButton value="Retornar"
+					action="#{usuarioBean.retornarMenuPrincipal()}"
+					rendered="#{!usuarioBean.exibirCampos}" />
+			</h:panelGrid>
+		</h:panelGrid>
+		<p:dialog header="Confirmação" widgetVar="dlg1" showEffect="explode"
+			hideEffect="bounce" height="60" resizable="false">
+			<div align="center">
+				<h:panelGrid>
+					<h:outputText value="Confirmação de exclusão de registro?" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Sim" onclick="confirmation.hide()"
+						action="#{usuarioBean.excluir()}" update=":form" />
+					<p:commandButton value="Não" onclick="confirmation.hide()"
+						update=":form" />
+				</h:panelGrid>
+			</div>
+		</p:dialog>
+	</h:form>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Login</title>
+	<h:outputStylesheet library="css" name="estilo.css" />
+</h:head>
+<body>
+	<h:form id="form">
+		<p:ajaxStatus style="width=66px;height=66px;" id="ajaxStatus">
+			<f:facet name="start">
+				<h:graphicImage library="imagens" name="ajax-loading.gif" />
+			</f:facet>
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
+		<p:focus context="form" />
+		<p:growl id="msg" />
+
+		<div align="center">
+			<h:panelGrid rendered="#{!loginBean.novoUsuario}" columns="3">
+
+				<h:outputLabel>
+					<h:graphicImage library="imagens" name="java150.png"
+						style="border:0" />
+				</h:outputLabel>
+				<h:panelGrid>
+					<h:panelGrid columns="2">
+						<h:outputLabel value="Login" />
+						<p:inputText id="txtlogin" value="#{loginBean.login}" />
+						<h:outputLabel value="Senha" />
+						<p:password id="txtsenha" value="#{loginBean.senha}" />
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<p:commandButton id="btnlogin" value="Login"
+							action="#{loginBean.efetuarLogin()}" update=":form" />
+						<p:commandButton id="btnregistrar" value="Registre-se"
+							action="#{loginBean.novoUsuario()}" update=":form"
+							immediate="true" />
+						<p:commandButton value="Esqueci a senha"
+							title="Informe o login para envio de senha pelo email cadastro"
+							action="#{loginBean.enviarNovaSenha()}" update=":form">
+						</p:commandButton>
+					</h:panelGrid>
+				</h:panelGrid>
+				<h:outputLabel>
+					<h:graphicImage library="imagens" name="jsf150.png"
+						style="border:0" />
+				</h:outputLabel>
+
+			</h:panelGrid>
+		</div>
+
+		<h:panelGrid columns="2" rendered="#{loginBean.novoUsuario}">
+			<h:outputLabel value="Nome" />
+			<p:inputText id="txtnome" value="#{loginBean.usuarioLogado.nome}"
+				required="true" requiredMessage="Campo Nome requerido" size="80"
+				maxlength="80" />
+			<h:outputLabel value="Email" />
+			<p:inputText id="txtemail" value="#{loginBean.usuarioLogado.email}"
+				required="true" requiredMessage="Campo Email requerido" size="100"
+				maxlength="100" />
+			<h:outputLabel value="Login" />
+			<p:inputText id="txtlogincad"
+				value="#{loginBean.usuarioLogado.login}" required="true"
+				requiredMessage="Campo Nome requerido" size="60" maxlength="60" />
+			<h:outputLabel value="Senha" />
+			<p:password id="txtsenhacad" required="true"
+				value="#{loginBean.usuarioLogado.senha}"
+				requiredMessage="Campo senha requerido" feedback="true"
+				match="txtconfirmacad" size="20"
+				validatorMessage="Senha não confere" />
+			<h:outputLabel value="Confirma Senha" />
+			<p:password id="txtconfirmacad" required="true"
+				value="#{loginBean.confirmaSenha}"
+				requiredMessage="Campo confirma senha requerido" feedback="true"
+				size="20" />
+			<p:commandButton value="Salvar"
+				action="#{loginBean.registrarNovoUsuario()}" update=":form" />
+			<p:commandButton value="Cancelar"
+				action="#{loginBean.cancelarRegistro()}" update=":form"
+				immediate="true" />
+		</h:panelGrid>
+	</h:form>
+</body>
+</html>
